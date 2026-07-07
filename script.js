@@ -34,6 +34,15 @@ async function getArtistAlbums(artistName) {
   console.log(cleanAlbums);
 }
 
-function reRender(realAlbums) {
-  const div = document.getElementsByClassName("album-card");
+function reRender(cleanAlbums) {
+  const albumList = document.querySelector(".album-list");
+  albumList.innerHTML = " ";
+  for (let i = 0; i < cleanAlbums.length; i++) {
+    const card = cleanAlbums[i];
+    const li = document.createElement("li");
+    albumList.append(li);
+    li.innerHTML = `<h2>${card.name}</h2>
+    <p>${card.p}</p>
+    <img>${card.img}</img>`;
+  }
 }
