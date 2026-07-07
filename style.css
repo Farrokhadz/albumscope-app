@@ -1,4 +1,3 @@
-/* ===== Tokens ===== */
 :root {
   --bg: #070707;
   --bg-elevated: #121212;
@@ -45,7 +44,6 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* ===== Header ===== */
 header {
   position: sticky;
   top: 0;
@@ -59,18 +57,10 @@ header {
   border-bottom: 1px solid var(--border);
 }
 
-.logo-mark {
-  display: grid;
-  place-items: center;
-  padding: 6px;
-  border-radius: 50%;
-  background: var(--green);
-  box-shadow: var(--shadow-glow);
-}
-
 header img {
-  width: 30px;
-  height: 30px;
+  filter: brightness(0) invert(1);
+  width: 45px;
+  height: 45px;
 }
 header h1 {
   font-family: var(--font-display);
@@ -80,14 +70,12 @@ header h1 {
   margin: 0;
 }
 
-/* ===== Main ===== */
 main {
   max-width: 920px;
   margin: 0 auto;
   padding: clamp(32px, 6vw, 64px) clamp(20px, 6vw, 24px) 80px;
 }
 
-/* ===== Search ===== */
 .Search {
   display: flex;
   align-items: center;
@@ -159,7 +147,6 @@ main {
   fill: #06170c;
 }
 
-/* ===== Artist card ===== */
 .album-card {
   display: flex;
   align-items: center;
@@ -195,7 +182,6 @@ main {
   font-size: 14px;
 }
 
-/* ===== Album grid ===== */
 .album-list {
   list-style: none;
   display: grid;
@@ -252,14 +238,12 @@ main {
   color: var(--text-faint);
 }
 
-/* ===== Reduced motion ===== */
 @media (prefers-reduced-motion: reduce) {
   * {
     transition-duration: 0.01ms !important;
   }
 }
 
-/* ===== Responsive ===== */
 @media (max-width: 480px) {
   .album-card {
     flex-direction: column;
