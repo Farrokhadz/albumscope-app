@@ -15,14 +15,10 @@ async function getArtistAlbums(artistName) {
   const lookupUrl = `https://itunes.apple.com/lookup?id=${artistId}&entity=album`;
   const albumsResponse = await fetch(lookupUrl);
   const albumsData = await albumsResponse.json();
-  console.log(data);
-  console.log(albumsData);
   const albumsOnly = albumsData.results.filter((item) => {
     return item.wrapperType === "collection";
   });
   const realAlbums = albumsOnly.filter((item) => item.trackCount > 1);
-
-  console.log(realAlbums);
   const cleanAlbums = realAlbums.map((item) => {
     return {
       name: item.collectionName,
@@ -32,17 +28,20 @@ async function getArtistAlbums(artistName) {
     };
   });
   console.log(cleanAlbums);
+  reRender(cleanAlbums);
 }
 
 function reRender(cleanAlbums) {
   const albumList = document.querySelector(".album-list");
+  console.log(card);
   albumList.innerHTML = " ";
   for (let i = 0; i < cleanAlbums.length; i++) {
     const card = cleanAlbums[i];
     const li = document.createElement("li");
     albumList.append(li);
-    li.innerHTML = `<h2>${card.name}</h2>
-    <p>${card.p}</p>
-    <img>${card.img}</img>`;
+    li.innerHTML = `
+    <img src = "${card.image}"/>
+    <p>${card.year}</p>
+    <h2>${card.name}</h2>`;
   }
 }
