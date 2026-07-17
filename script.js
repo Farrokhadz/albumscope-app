@@ -8,32 +8,36 @@ form.addEventListener("submit", function (e) {
 });
 
 async function getArtistAlbums(artistName) {
-  const searchUrl = `https://itunes.apple.com/search?term=${artistName}&entity=musicArtist`;
-  const response = await fetch(searchUrl);
-  const data = await response.json();
-  const artistId = data.results[0].artistId;
-  const lookupUrl = `https://itunes.apple.com/lookup?id=${artistId}&entity=album`;
-  const albumsResponse = await fetch(lookupUrl);
-  const albumsData = await albumsResponse.json();
-  const albumsOnly = albumsData.results.filter((item) => {
-    return item.wrapperType === "collection";
-  });
-  const realAlbums = albumsOnly.filter((item) => item.trackCount > 1);
-  const cleanAlbums = realAlbums.map((item) => {
-    return {
-      name: item.collectionName,
-      image: item.artworkUrl100,
-      year: item.releaseDate.slice(0, 4),
-      id: item.collectionId,
-    };
-  });
-  console.log(cleanAlbums);
-  reRender(cleanAlbums);
+  console.log("تابع شروع شد");
+  try {
+    const searchUrl = `https://itunes.apple.com/search?term=${artistName}&entity=musicArtist`;
+    const response = await fetch(searchUrl);
+    const data = await response.json();
+    const artistId = data.results[0].artistId;
+    const lookupUrl = `https://itunes.apple.com/lookup?id=${artistId}&entity=album`;
+    const albumsResponse = await fetch(lookupUrl);
+    const albumsData = await albumsResponse.json();
+    const albumsOnly = albumsData.results.filter((item) => {
+      return item.wrapperType === "collection";
+    });
+    const realAlbums = albumsOnly.filter((item) => item.trackCount > 1);
+    const cleanAlbums = realAlbums.map((item) => {
+      return {
+        name: item.collectionName,
+        image: item.artworkUrl100,
+        year: item.releaseDate.slice(0, 4),
+        id: item.collectionId,
+      };
+    });
+    console.log("تعداد آلبوم‌های نهایی:", cleanAlbums.length);
+    reRender(cleanAlbums, artistName);
+  } catch (error) {
+    console.log("خطا:", error);
+  }
 }
 
-function reRender(cleanAlbums) {
+function reRender(cleanAlbums, artistName) {
   const albumList = document.querySelector(".album-list");
-  console.log(card);
   albumList.innerHTML = " ";
   for (let i = 0; i < cleanAlbums.length; i++) {
     const card = cleanAlbums[i];
@@ -44,4 +48,7 @@ function reRender(cleanAlbums) {
     <p>${card.year}</p>
     <h2>${card.name}</h2>`;
   }
+  document.querySelector(".singer-name").textContent = `${artistName}`;
+  document.querySelector(".album-length").textContent =
+    `Found ${cleanAlbums.length} albums by ${artistName}`;
 }
