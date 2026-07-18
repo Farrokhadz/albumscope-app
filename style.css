@@ -116,46 +116,92 @@ main {
   fill: #05140c;
 }
 
-/* هیرو / کارت خلاصه‌ی هنرمند، الهام از صفحه‌ی Frank Ocean */
+/* ============================= */
+/* هیرو کارت هنرمند، الهام از Apple Music */
+/* ============================= */
 .album-card {
   position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 10px;
-  background:
-    radial-gradient(circle at 50% 0%, var(--accent-glow), transparent 60%),
-    var(--surface-1);
-  border: 1px solid var(--border);
+  width: 100%;
+  aspect-ratio: 1 / 1;
   border-radius: var(--radius);
-  padding: 32px 20px 22px;
-  margin-bottom: 28px;
   overflow: hidden;
+  background: var(--surface-1);
+  margin-bottom: 28px;
 }
 
-.album-card img {
-  width: 84px;
-  height: 84px;
-  border-radius: 50%;
-  background: var(--surface-2);
-  padding: 14px;
-  border: 1px solid var(--accent-dim);
+/* لایه‌ی عکس، JS فقط اینجا رو عوض می‌کنه */
+.card-profile {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.card-profile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* لایه‌ی رنگ سبز روی عکس، با blend mode */
+.card-tint {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: var(--accent);
+  mix-blend-mode: color;
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+/* یه لایه‌ی تیره‌ی اضافه برای عمق بیشتر */
+.card-tint::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--bg);
+  mix-blend-mode: multiply;
+  opacity: 0.25;
+}
+
+/* گرادیان تیره‌ی پایین، برای خوانایی متن، دقیقاً مثل طرح Apple Music */
+.card-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  background: linear-gradient(
+    180deg,
+    transparent 40%,
+    rgba(5, 10, 8, 0.55) 68%,
+    rgba(5, 10, 8, 0.96) 100%
+  );
+  pointer-events: none;
+}
+
+/* متن روی عکس */
+.card-info {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 4;
+  padding: 20px;
 }
 
 .singer-name {
   font-family: "Space Grotesk", sans-serif;
-  font-size: 26px;
+  font-size: 34px;
   font-weight: 700;
   letter-spacing: -0.02em;
+  color: var(--text-primary);
+  line-height: 1.1;
+  margin-bottom: 6px;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
 }
 
 .album-length {
-  font-size: 12.5px;
+  font-size: 13px;
   color: var(--text-secondary);
-  background: var(--surface-2);
-  padding: 5px 14px;
-  border-radius: 999px;
 }
 
 /* عنوان بخش */
@@ -166,7 +212,7 @@ main {
   margin-bottom: 10px;
 }
 
-/* لیست آلبوم‌ها، به‌سبک ردیفی Apple Music */
+/* لیست آلبوم‌ها */
 .album-list {
   list-style: none;
   display: flex;
@@ -253,4 +299,7 @@ main {
 
 .nav-item.active {
   color: var(--accent);
+}
+a.nav-item {
+  text-decoration: none;
 }

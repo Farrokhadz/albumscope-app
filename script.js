@@ -10,6 +10,10 @@ form.addEventListener("submit", function (e) {
 async function getArtistAlbums(artistName) {
   console.log("تابع شروع شد");
   try {
+    const profile_url = `https://www.theaudiodb.com/api/v1/json/2/search.php?s=${artistName}`;
+    const profile_response = await fetch(profile_url);
+    const profile = await profile_response.json();
+    console.log(profile);
     const searchUrl = `https://itunes.apple.com/search?term=${artistName}&entity=musicArtist`;
     const response = await fetch(searchUrl);
     const data = await response.json();
@@ -30,13 +34,13 @@ async function getArtistAlbums(artistName) {
       };
     });
     console.log("تعداد آلبوم‌های نهایی:", cleanAlbums.length);
-    reRender(cleanAlbums, artistName);
+    reRender(cleanAlbums, artistName, profile);
   } catch (error) {
     console.log("خطا:", error);
   }
 }
 
-function reRender(cleanAlbums, artistName) {
+function reRender(cleanAlbums, artistName, profile) {
   const albumList = document.querySelector(".album-list");
   albumList.innerHTML = " ";
   for (let i = 0; i < cleanAlbums.length; i++) {
@@ -51,4 +55,11 @@ function reRender(cleanAlbums, artistName) {
   document.querySelector(".singer-name").textContent = `${artistName}`;
   document.querySelector(".album-length").textContent =
     `Found ${cleanAlbums.length} albums by ${artistName}`;
+  console.log(profile);
+  if (profile.artists) {
+    document.querySelector(".card-profile").innerHTML =
+      `<img src = "${profile.artists[0].strArtistFanart}"/>`;
+  } else {
+    document.querySelector(".card-profile").innerHTML = `<img src = ""/>`;
+  }
 }

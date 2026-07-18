@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="login.css" />
+    <title>Playhead — Login</title>
+  </head>
+  <body class="auth-body">
+    <div class="phone">
+      <div class="hero hero-short">
+        <img
+          class="hero-img"
+          src="https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?q=80&w=1000&auto=format&fit=crop"
+          alt="vinyl record and headphones"
+        />
+        <div class="hero-tint"></div>
+
+        <div class="hero-greeting">
+          <h1>Hello.</h1>
+          <h1 class="light">Welcome back!</h1>
+        </div>
+      </div>
+
+      <form class="auth-sheet">
+        <div class="sheet-handle"></div>
+        <p class="sheet-title">Enter to your account</p>
+
+        <label class="field-label" for="email">E-mail</label>
+        <input
+          class="field-input"
+          type="email"
+          id="email"
+          placeholder="you@example.com"
+        />
+
+        <label class="field-label" for="password">Password</label>
+        <div class="password-wrap">
+          <input
+            class="field-input"
+            type="password"
+            id="password"
+            placeholder="Enter your password..."
+          />
+          <button type="button" class="toggle-eye" aria-label="Show password">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"></path>
+              <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+          </button>
+        </div>
+
+        <a href="#" class="forgot-link">Forgot the password?</a>
+
+        <button type="submit" class="login-btn">Login</button>
+
+        <p class="signup-text">
+          Don't have an account? <a href="#">Sign up</a>
+        </p>
+      </form>
+    </div>
+  </body>
+</html>
