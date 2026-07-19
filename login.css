@@ -46,20 +46,14 @@
   overflow: hidden;
 }
 
-.hero-short {
-  flex: none;
-  height: 42vh;
-  min-height: 320px;
-}
-
 .hero-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
+  transform-origin: center center;
 }
 
-/* رنگ سبز روی عکس، مثل جلوه‌ای که برای عکس هنرمند هم داشتیم */
 .hero-tint {
   position: absolute;
   inset: 0;
@@ -75,11 +69,7 @@
 .hero-fade {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    180deg,
-    transparent 40%,
-    rgba(5, 20, 12, 0.9) 100%
-  );
+  background: linear-gradient(180deg, transparent 40%, var(--bg-card) 100%);
 }
 
 .hero-text {
@@ -88,6 +78,7 @@
   right: 24px;
   bottom: 90px;
   z-index: 2;
+  transition: opacity 0.3s ease;
 }
 
 .hero-text p {
@@ -102,6 +93,29 @@
   font-weight: 700;
 }
 
+.hero-greeting {
+  position: absolute;
+  left: 24px;
+  right: 24px;
+  top: 50px;
+  z-index: 2;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.hero-greeting h1 {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  line-height: 1.15;
+}
+
+.hero-greeting h1.light {
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
 .swipe-hint {
   position: absolute;
   left: 50%;
@@ -113,6 +127,7 @@
   align-items: center;
   color: var(--text-primary);
   opacity: 0.85;
+  transition: opacity 0.3s ease;
 }
 
 .swipe-hint svg {
@@ -138,48 +153,19 @@
   }
 }
 
-.sheet-peek {
-  height: 40px;
-  background: var(--bg-card);
-  border-top-left-radius: 28px;
-  border-top-right-radius: 28px;
-  margin-top: -28px;
-  position: relative;
-  z-index: 3;
-}
-
-/* ===== فرم لاگین ===== */
+/* ===== فرم لاگین (شیت کشویی) ===== */
 .auth-sheet {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 5;
   background: var(--bg-card);
   border-top-left-radius: 28px;
   border-top-right-radius: 28px;
-  margin-top: -28px;
-  position: relative;
-  z-index: 3;
   padding: 14px 26px 32px;
   display: flex;
   flex-direction: column;
-  flex: 1;
-}
-
-.hero-greeting {
-  position: absolute;
-  left: 24px;
-  bottom: 60px;
-  z-index: 2;
-}
-
-.hero-greeting h1 {
-  font-family: "Space Grotesk", sans-serif;
-  font-size: 32px;
-  font-weight: 700;
-  color: var(--text-primary);
-  line-height: 1.15;
-}
-
-.hero-greeting h1.light {
-  font-weight: 500;
-  color: var(--text-secondary);
 }
 
 .sheet-handle {
@@ -190,6 +176,13 @@
   align-self: center;
   margin-bottom: 18px;
   opacity: 0.5;
+  cursor: grab;
+  touch-action: none;
+}
+
+.sheet-content {
+  opacity: 0;
+  transition: opacity 0.25s ease;
 }
 
 .sheet-title {
@@ -259,7 +252,7 @@
   font-size: 12.5px;
   color: var(--accent);
   text-decoration: none;
-  margin-bottom: 26px;
+  margin-bottom: 50px;
   margin-top: -8px;
 }
 
@@ -278,6 +271,7 @@
     transform 0.15s ease,
     box-shadow 0.15s ease;
   box-shadow: 0 8px 24px rgba(47, 214, 117, 0.25);
+  margin-top: 15px;
 }
 
 .login-btn:hover {

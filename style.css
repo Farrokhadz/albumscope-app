@@ -117,7 +117,7 @@ main {
 }
 
 /* ============================= */
-/* هیرو کارت هنرمند، الهام از Apple Music */
+/* هیرو کارت هنرمند */
 /* ============================= */
 .album-card {
   position: relative;
@@ -129,7 +129,6 @@ main {
   margin-bottom: 28px;
 }
 
-/* لایه‌ی عکس، JS فقط اینجا رو عوض می‌کنه */
 .card-profile {
   position: absolute;
   inset: 0;
@@ -143,7 +142,6 @@ main {
   display: block;
 }
 
-/* لایه‌ی رنگ سبز روی عکس، با blend mode */
 .card-tint {
   position: absolute;
   inset: 0;
@@ -154,17 +152,6 @@ main {
   pointer-events: none;
 }
 
-/* یه لایه‌ی تیره‌ی اضافه برای عمق بیشتر */
-.card-tint::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: var(--bg);
-  mix-blend-mode: multiply;
-  opacity: 0.25;
-}
-
-/* گرادیان تیره‌ی پایین، برای خوانایی متن، دقیقاً مثل طرح Apple Music */
 .card-overlay {
   position: absolute;
   inset: 0;
@@ -178,7 +165,6 @@ main {
   pointer-events: none;
 }
 
-/* متن روی عکس */
 .card-info {
   position: absolute;
   left: 0;
@@ -292,6 +278,10 @@ main {
   padding: 4px 12px;
 }
 
+a.nav-item {
+  text-decoration: none;
+}
+
 .nav-item svg {
   width: 22px;
   height: 22px;
@@ -299,7 +289,4 @@ main {
 
 .nav-item.active {
   color: var(--accent);
-}
-a.nav-item {
-  text-decoration: none;
 }
