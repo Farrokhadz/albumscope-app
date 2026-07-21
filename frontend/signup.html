@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="signup.css" />
+    <title>Playhead — Sign up</title>
+  </head>
+  <body class="auth-body">
+    <div class="phone">
+      <form class="auth-sheet" id="authSheet">
+        <div class="sheet-content" id="sheetContent">
+          <p class="sheet-title">Create your account</p>
+
+          <label class="field-label" for="username">Username</label>
+          <input
+            class="field-input"
+            type="text"
+            id="username"
+            placeholder="Enter your username..."
+          />
+
+          <label class="field-label" for="email">E-mail</label>
+          <input
+            class="field-input"
+            type="email"
+            id="email"
+            placeholder="you@example.com"
+          />
+
+          <label class="field-label" for="password">Password</label>
+          <div class="password-wrap">
+            <input
+              class="field-input"
+              type="password"
+              id="password"
+              placeholder="Enter your password..."
+            />
+            <button type="button" class="toggle-eye" aria-label="Show password">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            </button>
+          </div>
+
+          <label class="field-label" for="confirmPassword"
+            >Confirm Password</label
+          >
+          <div class="password-wrap">
+            <input
+              class="field-input"
+              type="password"
+              id="confirmPassword"
+              placeholder="Re-enter your password..."
+            />
+            <button type="button" class="toggle-eye" aria-label="Show password">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            </button>
+          </div>
+
+          <button type="submit" class="login-btn">Sign up</button>
+
+          <p class="signup-text">
+            Already have an account? <a href="login.html">Login</a>
+          </p>
+        </div>
+      </form>
+    </div>
+  </body>
+</html>
