@@ -19,7 +19,8 @@
 }
 
 .auth-body {
-  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -30,7 +31,7 @@
 .phone {
   width: 100%;
   max-width: 420px;
-  min-height: 100vh;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   background: var(--bg-card);
@@ -42,8 +43,9 @@
 .hero {
   position: relative;
   flex: 1;
-  min-height: 60vh;
   overflow: hidden;
+  transition: transform 0.3s ease;
+  transform-origin: center top;
 }
 
 .hero-img {
