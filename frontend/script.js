@@ -1,3 +1,4 @@
+document.getElementById("app").innerHTML = renderSearchPage();
 const input = document.getElementById("input");
 const albumCard = document.querySelector(".album-card");
 const albumList = document.querySelector(".album-list");
@@ -6,7 +7,7 @@ form.addEventListener("submit", function (e) {
   e.preventDefault();
   getArtistAlbums(input.value);
 });
-
+document.getElementById("app").innerHTML = renderSearchPage();
 async function getArtistAlbums(artistName) {
   console.log("تابع شروع شد");
   try {
