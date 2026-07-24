@@ -1,10 +1,16 @@
 function renderRoute() {
   const path = location.pathname;
+function renderRoute() {
+  const path = location.pathname;
 
   if (path === "/library") {
     document.getElementById("app").innerHTML = renderLibraryPage();
   } else if (path === "/profile") {
     document.getElementById("app").innerHTML = renderProfilePage();
+  } else if (path.startsWith("/album/")) {
+    const albumId = path.split("/")[2];
+    document.getElementById("app").innerHTML = renderAlbumPage(albumId);
+    initAlbumPage(albumId);
   } else {
     document.getElementById("app").innerHTML = renderSearchPage();
     initSearchPage();

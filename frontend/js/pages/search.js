@@ -32,7 +32,7 @@ function renderSearchPage() {
   `;
 }
 
-function initSearchPage() {
+function albumSearchPage() {
   const input = document.getElementById("input");
   const form = document.querySelector("form");
 
