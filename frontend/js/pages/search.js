@@ -31,8 +31,9 @@ function renderSearchPage() {
     </ul>
   `;
 }
+let lastSearchResult = null;
 
-function albumSearchPage() {
+function initSearchPage() {
   const input = document.getElementById("input");
   const form = document.querySelector("form");
 
@@ -40,8 +41,15 @@ function albumSearchPage() {
     e.preventDefault();
     getArtistAlbums(input.value);
   });
-}
 
+  if (lastSearchResult) {
+    reRender(
+      lastSearchResult.cleanAlbums,
+      lastSearchResult.artistName,
+      lastSearchResult.profile,
+    );
+  }
+}
 async function getArtistAlbums(artistName) {
   console.log("تابع شروع شد");
   try {
@@ -73,12 +81,14 @@ async function getArtistAlbums(artistName) {
     });
 
     console.log("تعداد آلبوم‌های نهایی:", cleanAlbums.length);
+
+    lastSearchResult = { cleanAlbums, artistName, profile };
+
     reRender(cleanAlbums, artistName, profile);
   } catch (error) {
     console.log("خطا:", error);
   }
 }
-
 function reRender(cleanAlbums, artistName, profile) {
   const albumList = document.querySelector(".album-list");
   albumList.innerHTML = " ";
@@ -87,9 +97,11 @@ function reRender(cleanAlbums, artistName, profile) {
     const li = document.createElement("li");
     albumList.append(li);
     li.innerHTML = `
-    <img src="${card.image}"/>
-    <p>${card.year}</p>
-    <h2>${card.name}</h2>`;
+        <a href="/album/${card.id}" data-link>
+        <img src="${card.image}"/>
+        <p>${card.year}</p>
+        <h2>${card.name}</h2>
+        </a>`;
   }
 
   document.querySelector(".singer-name").textContent = `${artistName}`;

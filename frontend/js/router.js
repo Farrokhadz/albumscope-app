@@ -1,7 +1,5 @@
 function renderRoute() {
   const path = location.pathname;
-function renderRoute() {
-  const path = location.pathname;
 
   if (path === "/library") {
     document.getElementById("app").innerHTML = renderLibraryPage();
