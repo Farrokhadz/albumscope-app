@@ -3,6 +3,7 @@ function renderRoute() {
 
   if (path === "/library") {
     document.getElementById("app").innerHTML = renderLibraryPage();
+    initLibraryPage();
   } else if (path === "/profile") {
     document.getElementById("app").innerHTML = renderProfilePage();
   } else if (path.startsWith("/album/")) {
