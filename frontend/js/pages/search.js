@@ -12,6 +12,25 @@ function renderSearchPage() {
       </button>
     </form>
 
+    <div class="search-welcome">
+      <div class="welcome-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M9 18V5l12-2v13"></path>
+          <circle cx="6" cy="18" r="3"></circle>
+          <circle cx="18" cy="16" r="3"></circle>
+        </svg>
+      </div>
+      <p class="welcome-title">Discover your next favorite album</p>
+      <p class="welcome-subtitle">Search any artist, or try one of these</p>
+      <div class="popular-chips">
+        <button class="chip" data-artist="Drake">Drake</button>
+        <button class="chip" data-artist="The Weeknd">The Weeknd</button>
+        <button class="chip" data-artist="Taylor Swift">Taylor Swift</button>
+        <button class="chip" data-artist="Dua Lipa">Dua Lipa</button>
+        <button class="chip" data-artist="Eminem">Eminem</button>
+      </div>
+    </div>
+
     <div class="search-status"></div>
 
     <div class="album-card" style="display: none;">
@@ -46,6 +65,25 @@ function renderSearchPage() {
       </button>
     </form>
 
+    <div class="search-welcome">
+      <div class="welcome-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M9 18V5l12-2v13"></path>
+          <circle cx="6" cy="18" r="3"></circle>
+          <circle cx="18" cy="16" r="3"></circle>
+        </svg>
+      </div>
+      <p class="welcome-title">Discover your next favorite album</p>
+      <p class="welcome-subtitle">Search any artist, or try one of these</p>
+      <div class="popular-chips">
+        <button class="chip" data-artist="Drake">Drake</button>
+        <button class="chip" data-artist="The Weeknd">The Weeknd</button>
+        <button class="chip" data-artist="Taylor Swift">Taylor Swift</button>
+        <button class="chip" data-artist="Dua Lipa">Dua Lipa</button>
+        <button class="chip" data-artist="Eminem">Eminem</button>
+      </div>
+    </div>
+
     <div class="search-status"></div>
 
     <div class="album-card" style="display: none;">
@@ -69,8 +107,23 @@ function initSearchPage() {
   const input = document.getElementById("input");
   const form = document.querySelector("form");
   const suggestionsList = document.querySelector(".suggestions-list");
+  const welcomeSection = document.querySelector(".search-welcome");
 
   let debounceTimer;
+
+  if (lastSearchResult) {
+    welcomeSection.style.display = "none";
+  }
+
+  document.querySelectorAll(".chip").forEach((chip) => {
+    chip.addEventListener("click", function () {
+      const artistName = chip.getAttribute("data-artist");
+      input.value = artistName;
+      welcomeSection.style.display = "none";
+      showLoadingState();
+      getArtistAlbums(artistName);
+    });
+  });
 
   input.addEventListener("input", function () {
     clearTimeout(debounceTimer);
@@ -83,8 +136,11 @@ function initSearchPage() {
       document.querySelector(".album-card").style.display = "none";
       document.querySelector(".section-title").style.display = "none";
       document.querySelector(".album-list").innerHTML = "";
+      welcomeSection.style.display = "flex";
       return;
     }
+
+    welcomeSection.style.display = "none";
 
     debounceTimer = setTimeout(function () {
       fetchSuggestions(value);
