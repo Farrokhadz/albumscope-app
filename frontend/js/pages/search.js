@@ -1,5 +1,16 @@
 function renderSearchPage() {
   return `
+  <div class="search-welcome">
+  <p class="welcome-title">Discover your next favorite album</p>
+  <p class="welcome-subtitle">Search any artist, or try one of these</p>
+  <div class="popular-grid" id="popular-grid">
+    <div class="popular-skeleton"></div>
+    <div class="popular-skeleton"></div>
+    <div class="popular-skeleton"></div>
+    <div class="popular-skeleton"></div>
+    <div class="popular-skeleton"></div>
+  </div>
+</div>
     <form class="Search">
       <div class="search-input-wrapper">
         <input placeholder="Enter the name of singer" id="input" autocomplete="off" />
@@ -51,6 +62,14 @@ function renderSearchPage() {
 }
 let lastSearchResult = null;
 
+const popularArtists = [
+  "Drake",
+  "The Weeknd",
+  "Taylor Swift",
+  "Dua Lipa",
+  "Eminem",
+];
+
 function renderSearchPage() {
   return `
     <form class="Search">
@@ -75,12 +94,12 @@ function renderSearchPage() {
       </div>
       <p class="welcome-title">Discover your next favorite album</p>
       <p class="welcome-subtitle">Search any artist, or try one of these</p>
-      <div class="popular-chips">
-        <button class="chip" data-artist="Drake">Drake</button>
-        <button class="chip" data-artist="The Weeknd">The Weeknd</button>
-        <button class="chip" data-artist="Taylor Swift">Taylor Swift</button>
-        <button class="chip" data-artist="Dua Lipa">Dua Lipa</button>
-        <button class="chip" data-artist="Eminem">Eminem</button>
+      <div class="popular-grid" id="popular-grid">
+        <div class="popular-skeleton"></div>
+        <div class="popular-skeleton"></div>
+        <div class="popular-skeleton"></div>
+        <div class="popular-skeleton"></div>
+        <div class="popular-skeleton"></div>
       </div>
     </div>
 
@@ -113,17 +132,9 @@ function initSearchPage() {
 
   if (lastSearchResult) {
     welcomeSection.style.display = "none";
+  } else {
+    loadPopularArtists();
   }
-
-  document.querySelectorAll(".chip").forEach((chip) => {
-    chip.addEventListener("click", function () {
-      const artistName = chip.getAttribute("data-artist");
-      input.value = artistName;
-      welcomeSection.style.display = "none";
-      showLoadingState();
-      getArtistAlbums(artistName);
-    });
-  });
 
   input.addEventListener("input", function () {
     clearTimeout(debounceTimer);
@@ -153,8 +164,17 @@ function initSearchPage() {
     }
   });
 
+  // Fixed: submitting the form (pressing Enter or clicking the search icon)
+  // now actually triggers a search instead of doing nothing.
   form.addEventListener("submit", function (e) {
     e.preventDefault();
+    const value = input.value.trim();
+    if (value === "") return;
+
+    suggestionsList.innerHTML = "";
+    welcomeSection.style.display = "none";
+    showLoadingState();
+    getArtistAlbums(value);
   });
 
   if (lastSearchResult) {
@@ -166,9 +186,72 @@ function initSearchPage() {
   }
 }
 
+async function loadPopularArtists() {
+  const grid = document.getElementById("popular-grid");
+  if (!grid) return;
+
+  grid.innerHTML = "";
+
+  // Wrap cards in a ".popular-track" element that the CSS animates.
+  const track = document.createElement("div");
+  track.className = "popular-track";
+  grid.append(track);
+
+  // The artist list is duplicated so the marquee can loop seamlessly:
+  // once the track scrolls -50%, the second half lines up exactly
+  // where the first half started.
+  const marqueeArtists = [...popularArtists, ...popularArtists];
+
+  for (const artistName of marqueeArtists) {
+    const card = document.createElement("button");
+    card.type = "button";
+    card.className = "popular-card";
+    card.innerHTML = `<div class="popular-card-loading"></div>`;
+    track.append(card);
+
+    card.addEventListener("click", function () {
+      selectPopularArtist(artistName);
+    });
+
+    fetchPopularArtistImage(artistName, card);
+  }
+}
+
+async function fetchPopularArtistImage(artistName, card) {
+  try {
+    const url = `https://www.theaudiodb.com/api/v1/json/2/search.php?s=${encodeURIComponent(artistName)}`;
+    const response = await fetch(url);
+    const data = await response.json();
+
+    // Fixed: guard against `artists` being an empty array (not just null),
+    // which previously threw when reading `data.artists[0]`.
+    const image =
+      data.artists && data.artists.length > 0
+        ? data.artists[0].strArtistThumb
+        : "";
+
+    card.innerHTML = `
+      <img src="${image || ""}" alt="${artistName}" />
+      <div class="popular-card-overlay"></div>
+      <span class="popular-card-name">${artistName}</span>
+    `;
+  } catch (error) {
+    card.innerHTML = `<span class="popular-card-name">${artistName}</span>`;
+  }
+}
+
+function selectPopularArtist(artistName) {
+  const input = document.getElementById("input");
+  input.value = artistName;
+  document.querySelector(".search-welcome").style.display = "none";
+  showLoadingState();
+  getArtistAlbums(artistName);
+}
+
 async function fetchSuggestions(query) {
   try {
-    const url = `https://itunes.apple.com/search?term=${query}&entity=musicArtist&limit=5`;
+    // Fixed: encode the query so names with spaces/special characters work.
+    const url = `https://itunes.apple.com/search?term=${encodeURIComponent(query)}&entity=musicArtist&limit=5`;
     const response = await fetch(url);
     const data = await response.json();
 
@@ -239,14 +322,12 @@ function showErrorState() {
 }
 
 async function getArtistAlbums(artistName) {
-  console.log("تابع شروع شد");
   try {
-    const profile_url = `https://www.theaudiodb.com/api/v1/json/2/search.php?s=${artistName}`;
+    const profile_url = `https://www.theaudiodb.com/api/v1/json/2/search.php?s=${encodeURIComponent(artistName)}`;
     const profile_response = await fetch(profile_url);
     const profile = await profile_response.json();
-    console.log(profile);
 
-    const searchUrl = `https://itunes.apple.com/search?term=${artistName}&entity=musicArtist`;
+    const searchUrl = `https://itunes.apple.com/search?term=${encodeURIComponent(artistName)}&entity=musicArtist`;
     const response = await fetch(searchUrl);
     const data = await response.json();
 
@@ -269,12 +350,11 @@ async function getArtistAlbums(artistName) {
       return {
         name: item.collectionName,
         image: item.artworkUrl100,
-        year: item.releaseDate.slice(0, 4),
+        // Fixed: releaseDate can be missing on some entries; fall back safely.
+        year: item.releaseDate ? item.releaseDate.slice(0, 4) : "",
         id: item.collectionId,
       };
     });
-
-    console.log("تعداد آلبوم‌های نهایی:", cleanAlbums.length);
 
     if (cleanAlbums.length === 0) {
       showNoAlbumsState(artistName);
@@ -313,8 +393,8 @@ function reRender(cleanAlbums, artistName, profile) {
   document.querySelector(".album-length").textContent =
     `Found ${cleanAlbums.length} albums by ${artistName}`;
 
-  console.log(profile);
-  if (profile.artists) {
+  // Fixed: guard against `artists` being an empty array, same issue as above.
+  if (profile.artists && profile.artists.length > 0) {
     document.querySelector(".card-profile").innerHTML =
       `<img src="${profile.artists[0].strArtistFanart}"/>`;
   } else {
