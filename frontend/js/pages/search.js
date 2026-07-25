@@ -9,7 +9,9 @@ function renderSearchPage() {
       </button>
     </form>
 
-    <div class="album-card">
+    <div class="search-status"></div>
+
+    <div class="album-card" style="display: none;">
       <div class="card-profile">
         <img width="64" height="64" src="image/defultalbum-card.png" alt="artist" />
       </div>
@@ -21,17 +23,41 @@ function renderSearchPage() {
       </div>
     </div>
 
-    <h2 class="section-title">Albums</h2>
-    <ul class="album-list">
-      <li>
-        <img />
-        <h2>album name</h2>
-        <p>2026</p>
-      </li>
-    </ul>
+    <h2 class="section-title" style="display: none;">Albums</h2>
+    <ul class="album-list"></ul>
   `;
 }
 let lastSearchResult = null;
+
+function renderSearchPage() {
+  return `
+    <form class="Search">
+      <input placeholder="Enter the name of singer" id="input" />
+      <button type="submit" aria-label="Search">
+        <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="50" height="50" viewBox="0 0 50 50">
+          <path d="M 21 4 C 11.082241 4 3 12.082241 3 22 C 3 31.917759 11.082241 40 21 40 C 24.62177 40 27.99231 38.91393 30.820312 37.0625 L 43.378906 49.621094 L 47.621094 45.378906 L 35.224609 32.982422 C 37.581469 29.938384 39 26.13473 39 22 C 39 12.082241 30.917759 4 21 4 z M 21 8 C 28.756241 8 35 14.243759 35 22 C 35 29.756241 28.756241 36 21 36 C 13.243759 36 7 29.756241 7 22 C 7 14.243759 13.243759 8 21 8 z"></path>
+        </svg>
+      </button>
+    </form>
+
+    <div class="search-status"></div>
+
+    <div class="album-card" style="display: none;">
+      <div class="card-profile">
+        <img width="64" height="64" src="image/defultalbum-card.png" alt="artist" />
+      </div>
+      <div class="card-tint"></div>
+      <div class="card-overlay"></div>
+      <div class="card-info">
+        <h2 class="singer-name">singer name</h2>
+        <p class="album-length">this is a test for singer name</p>
+      </div>
+    </div>
+
+    <h2 class="section-title" style="display: none;">Albums</h2>
+    <ul class="album-list"></ul>
+  `;
+}
 
 function initSearchPage() {
   const input = document.getElementById("input");
@@ -39,6 +65,7 @@ function initSearchPage() {
 
   form.addEventListener("submit", function (e) {
     e.preventDefault();
+    showLoadingState();
     getArtistAlbums(input.value);
   });
 
@@ -50,6 +77,37 @@ function initSearchPage() {
     );
   }
 }
+
+function showLoadingState() {
+  document.querySelector(".search-status").innerHTML = `
+    <div class="status-box loading">
+      <div class="spinner"></div>
+      <p class="status-message">در حال جستجو...</p>
+    </div>
+  `;
+  document.querySelector(".album-card").style.display = "none";
+  document.querySelector(".section-title").style.display = "none";
+  document.querySelector(".album-list").innerHTML = "";
+}
+
+function showNotFoundState(artistName) {
+  document.querySelector(".search-status").innerHTML = `
+    <p class="status-message">هیچ خواننده‌ای با اسم "${artistName}" پیدا نشد.</p>
+  `;
+}
+
+function showNoAlbumsState(artistName) {
+  document.querySelector(".search-status").innerHTML = `
+    <p class="status-message">"${artistName}" پیدا شد، ولی آلبومی براش موجود نیست.</p>
+  `;
+}
+
+function showErrorState() {
+  document.querySelector(".search-status").innerHTML = `
+    <p class="status-message error">مشکلی پیش اومد. لطفاً دوباره امتحان کن.</p>
+  `;
+}
+
 async function getArtistAlbums(artistName) {
   console.log("تابع شروع شد");
   try {
@@ -61,6 +119,12 @@ async function getArtistAlbums(artistName) {
     const searchUrl = `https://itunes.apple.com/search?term=${artistName}&entity=musicArtist`;
     const response = await fetch(searchUrl);
     const data = await response.json();
+
+    if (data.results.length === 0) {
+      showNotFoundState(artistName);
+      return;
+    }
+
     const artistId = data.results[0].artistId;
 
     const lookupUrl = `https://itunes.apple.com/lookup?id=${artistId}&entity=album`;
@@ -82,16 +146,27 @@ async function getArtistAlbums(artistName) {
 
     console.log("تعداد آلبوم‌های نهایی:", cleanAlbums.length);
 
-    lastSearchResult = { cleanAlbums, artistName, profile };
+    if (cleanAlbums.length === 0) {
+      showNoAlbumsState(artistName);
+      return;
+    }
 
+    lastSearchResult = { cleanAlbums, artistName, profile };
     reRender(cleanAlbums, artistName, profile);
   } catch (error) {
     console.log("خطا:", error);
+    showErrorState();
   }
 }
+
 function reRender(cleanAlbums, artistName, profile) {
+  document.querySelector(".search-status").innerHTML = "";
+  document.querySelector(".album-card").style.display = "block";
+  document.querySelector(".section-title").style.display = "block";
+
   const albumList = document.querySelector(".album-list");
-  albumList.innerHTML = " ";
+  albumList.innerHTML = "";
+
   for (let i = 0; i < cleanAlbums.length; i++) {
     const card = cleanAlbums[i];
     const li = document.createElement("li");
