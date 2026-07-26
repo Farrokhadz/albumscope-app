@@ -11,7 +11,7 @@ function renderAlbumPage(albumId) {
       <img class="album-hero-cover" src="" alt="cover" />
     </div>
 
-    <h1 class="album-hero-title">در حال بارگذاری...</h1>
+    <h1 class="album-hero-title">Loading...</h1>
     <p class="album-hero-artist"></p>
 
     <div class="album-meta">

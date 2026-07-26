@@ -17,9 +17,12 @@ function renderSearchPage() {
         <ul class="suggestions-list"></ul>
       </div>
       <button type="submit" aria-label="Search">
-        <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="50" height="50" viewBox="0 0 50 50">
-          <path d="M 21 4 C 11.082241 4 3 12.082241 3 22 C 3 31.917759 11.082241 40 21 40 C 24.62177 40 27.99231 38.91393 30.820312 37.0625 L 43.378906 49.621094 L 47.621094 45.378906 L 35.224609 32.982422 C 37.581469 29.938384 39 26.13473 39 22 C 39 12.082241 30.917759 4 21 4 z M 21 8 C 28.756241 8 35 14.243759 35 22 C 35 29.756241 28.756241 36 21 36 C 13.243759 36 7 29.756241 7 22 C 7 14.243759 13.243759 8 21 8 z"></path>
-        </svg>
+      <button type="submit" aria-label="Search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+               <circle cx="11" cy="11" r="7"></circle>
+               <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+           </svg>
+</button>
       </button>
     </form>
 
@@ -78,8 +81,9 @@ function renderSearchPage() {
         <ul class="suggestions-list"></ul>
       </div>
       <button type="submit" aria-label="Search">
-        <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="50" height="50" viewBox="0 0 50 50">
-          <path d="M 21 4 C 11.082241 4 3 12.082241 3 22 C 3 31.917759 11.082241 40 21 40 C 24.62177 40 27.99231 38.91393 30.820312 37.0625 L 43.378906 49.621094 L 47.621094 45.378906 L 35.224609 32.982422 C 37.581469 29.938384 39 26.13473 39 22 C 39 12.082241 30.917759 4 21 4 z M 21 8 C 28.756241 8 35 14.243759 35 22 C 35 29.756241 28.756241 36 21 36 C 13.243759 36 7 29.756241 7 22 C 7 14.243759 13.243759 8 21 8 z"></path>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+          <circle cx="11" cy="11" r="7"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
         </svg>
       </button>
     </form>
@@ -164,8 +168,6 @@ function initSearchPage() {
     }
   });
 
-  // Fixed: submitting the form (pressing Enter or clicking the search icon)
-  // now actually triggers a search instead of doing nothing.
   form.addEventListener("submit", function (e) {
     e.preventDefault();
     const value = input.value.trim();
@@ -192,14 +194,10 @@ async function loadPopularArtists() {
 
   grid.innerHTML = "";
 
-  // Wrap cards in a ".popular-track" element that the CSS animates.
   const track = document.createElement("div");
   track.className = "popular-track";
   grid.append(track);
 
-  // The artist list is duplicated so the marquee can loop seamlessly:
-  // once the track scrolls -50%, the second half lines up exactly
-  // where the first half started.
   const marqueeArtists = [...popularArtists, ...popularArtists];
 
   for (const artistName of marqueeArtists) {
@@ -223,8 +221,6 @@ async function fetchPopularArtistImage(artistName, card) {
     const response = await fetch(url);
     const data = await response.json();
 
-    // Fixed: guard against `artists` being an empty array (not just null),
-    // which previously threw when reading `data.artists[0]`.
     const image =
       data.artists && data.artists.length > 0
         ? data.artists[0].strArtistThumb
@@ -250,7 +246,6 @@ function selectPopularArtist(artistName) {
 
 async function fetchSuggestions(query) {
   try {
-    // Fixed: encode the query so names with spaces/special characters work.
     const url = `https://itunes.apple.com/search?term=${encodeURIComponent(query)}&entity=musicArtist&limit=5`;
     const response = await fetch(url);
     const data = await response.json();
@@ -295,7 +290,7 @@ function showLoadingState() {
   document.querySelector(".search-status").innerHTML = `
     <div class="status-box loading">
       <div class="spinner"></div>
-      <p class="status-message">در حال جستجو...</p>
+      <p class="status-message">Searching...</p>
     </div>
   `;
   document.querySelector(".album-card").style.display = "none";
@@ -350,7 +345,6 @@ async function getArtistAlbums(artistName) {
       return {
         name: item.collectionName,
         image: item.artworkUrl100,
-        // Fixed: releaseDate can be missing on some entries; fall back safely.
         year: item.releaseDate ? item.releaseDate.slice(0, 4) : "",
         id: item.collectionId,
       };
@@ -382,18 +376,24 @@ function reRender(cleanAlbums, artistName, profile) {
     const li = document.createElement("li");
     albumList.append(li);
     li.innerHTML = `
-        <a href="/album/${card.id}" data-link>
-        <img src="${card.image}"/>
-        <p>${card.year}</p>
-        <h2>${card.name}</h2>
-        </a>`;
+          <a href="/album/${card.id}" data-link>
+          <div class="album-thumb">
+            <img src="${card.image}"/>
+            <div class="play-overlay">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M8 5v14l11-7z"></path>
+              </svg>
+            </div>
+          </div>
+          <p>${card.year}</p>
+          <h2>${card.name}</h2>
+          </a>`;
   }
 
   document.querySelector(".singer-name").textContent = `${artistName}`;
   document.querySelector(".album-length").textContent =
     `Found ${cleanAlbums.length} albums by ${artistName}`;
 
-  // Fixed: guard against `artists` being an empty array, same issue as above.
   if (profile.artists && profile.artists.length > 0) {
     document.querySelector(".card-profile").innerHTML =
       `<img src="${profile.artists[0].strArtistFanart}"/>`;
