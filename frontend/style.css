@@ -42,8 +42,24 @@ header {
   background: var(--bg);
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 10px;
   padding: 20px 20px 14px;
+  transition:
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+  border-bottom: 1px solid transparent;
+}
+
+header.scrolled {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+  border-bottom: 1px solid var(--border);
+}
+
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 header img {
@@ -57,6 +73,30 @@ header h1 {
   font-size: 18px;
   font-weight: 600;
   letter-spacing: -0.02em;
+}
+
+.header-icon-btn {
+  background: var(--surface-1);
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.header-icon-btn:hover {
+  color: var(--accent);
+  border-color: var(--accent-dim);
+}
+
+.header-icon-btn svg {
+  width: 18px;
+  height: 18px;
 }
 
 main {
@@ -726,7 +766,7 @@ a.nav-item {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: 50px 20px 30px;
+  padding: 40px 20px 20px;
 }
 
 .welcome-icon {
@@ -761,27 +801,133 @@ a.nav-item {
   margin-bottom: 24px;
 }
 
-.popular-chips {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 8px;
+/* Viewport: hides the overflow and fades the two edges so cards
+   look like they scroll in and out rather than cutting off abruptly. */
+.popular-grid {
+  width: 100%;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 8%,
+    black 92%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 8%,
+    black 92%,
+    transparent 100%
+  );
 }
 
-.chip {
+/* Track: holds the (duplicated) card list and does the actual scrolling. */
+.popular-track {
+  display: flex;
+  gap: 10px;
+  width: max-content;
+  animation: marquee 24s linear infinite;
+}
+
+.popular-track:hover {
+  animation-play-state: paused;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .popular-track {
+    animation: none;
+  }
+}
+
+.popular-card {
+  position: relative;
+  flex: 0 0 120px;
+  width: 120px;
+  height: 120px;
+  border-radius: 14px;
+  overflow: hidden;
   background: var(--surface-1);
   border: 1px solid var(--border);
-  border-radius: 999px;
-  padding: 8px 16px;
-  color: var(--text-secondary);
-  font-family: "Inter", sans-serif;
-  font-size: 13px;
   cursor: pointer;
-  transition: all 0.15s ease;
+  padding: 0;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
 }
 
-.chip:hover {
+/* Subtle green accent on hover/focus, reusing the existing theme tokens
+   so it stays consistent with the rest of the app instead of standing out. */
+.popular-card:hover,
+.popular-card:focus-visible {
   border-color: var(--accent);
-  color: var(--accent);
-  background: var(--accent-glow);
+  box-shadow: 0 0 14px var(--accent-glow);
+  transform: translateY(-2px);
+}
+
+.popular-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.popular-card-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    transparent 40%,
+    rgba(5, 10, 8, 0.9) 100%
+  );
+}
+
+.popular-card-name {
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  bottom: 8px;
+  font-family: "Inter", sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-primary);
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.popular-card-loading,
+.popular-skeleton {
+  flex: 0 0 120px;
+  width: 120px;
+  height: 120px;
+  background: linear-gradient(
+    90deg,
+    var(--surface-1) 25%,
+    var(--surface-2) 50%,
+    var(--surface-1) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+  border-radius: 14px;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
 }

@@ -42,3 +42,17 @@ document.body.addEventListener("click", (e) => {
 });
 
 renderRoute();
+window.addEventListener("scroll", function () {
+  const header = document.getElementById("main-header");
+  if (window.scrollY > 8) {
+    header.classList.add("scrolled");
+  } else {
+    header.classList.remove("scrolled");
+  }
+});
+
+document
+  .getElementById("header-notif-btn")
+  .addEventListener("click", function () {
+    alert("اعلان‌ها به‌زودی فعال می‌شن 🚧");
+  });
