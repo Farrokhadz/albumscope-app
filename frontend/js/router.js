@@ -6,7 +6,7 @@ function renderRoute() {
     initLibraryPage();
   } else if (path === "/profile") {
     document.getElementById("app").innerHTML = renderProfilePage();
-    initLibraryPage();
+    initProfilePage();
   } else if (path.startsWith("/album/")) {
     const albumId = path.split("/")[2];
     document.getElementById("app").innerHTML = renderAlbumPage(albumId);
