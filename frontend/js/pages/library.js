@@ -11,19 +11,19 @@ function initLibraryPage() {
 
   if (savedAlbums.length === 0) {
     container.innerHTML = `
-  <div class="empty-state">
-    <div class="empty-state-icon">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-        <path d="M9 18V5l12-2v13"></path>
-        <circle cx="6" cy="18" r="3"></circle>
-        <circle cx="18" cy="16" r="3"></circle>
-      </svg>
-    </div>
-    <p class="empty-state-title">Your library is empty</p>
-    <p class="empty-state-subtitle">Albums you save will show up here</p>
-    <a href="/" data-link class="empty-state-link">Find an album</a>
-  </div>
-`;
+      <div class="empty-state">
+        <div class="empty-state-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M9 18V5l12-2v13"></path>
+            <circle cx="6" cy="18" r="3"></circle>
+            <circle cx="18" cy="16" r="3"></circle>
+          </svg>
+        </div>
+        <p class="empty-state-title">Your library is empty</p>
+        <p class="empty-state-subtitle">Albums you save will show up here</p>
+        <a href="/" data-link class="empty-state-link">Find an album</a>
+      </div>
+    `;
     return;
   }
 
@@ -38,7 +38,15 @@ function initLibraryPage() {
         <p>${album.year}</p>
         <h2>${album.name}</h2>
       </a>
-      <button class="remove-btn" data-remove-id="${album.id}">✕</button>
+      <button class="remove-btn" data-remove-id="${album.id}" aria-label="Remove from library">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <path d="M3 6h18"></path>
+          <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+          <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path>
+          <line x1="10" y1="11" x2="10" y2="17"></line>
+          <line x1="14" y1="11" x2="14" y2="17"></line>
+        </svg>
+      </button>
     `;
     list.append(li);
   });
@@ -46,16 +54,14 @@ function initLibraryPage() {
   container.innerHTML = "";
   container.append(list);
 
-  // گوش دادن به کلیک دکمه‌های حذف
   container.querySelectorAll(".remove-btn").forEach((btn) => {
     btn.addEventListener("click", () => {
       const id = btn.getAttribute("data-remove-id");
       removeFromLibrary(id);
-      initLibraryPage(); // رفرش لیست بعد از حذف
+      initLibraryPage();
     });
   });
 }
-
 // --- توابع کمکی برای کار با localStorage ---
 
 function getSavedAlbums() {

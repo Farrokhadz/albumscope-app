@@ -518,15 +518,24 @@ a.nav-item {
   background: none;
   border: none;
   color: var(--text-muted);
-  font-size: 16px;
   cursor: pointer;
-  padding: 6px;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  transition: all 0.15s ease;
+}
+
+.remove-btn svg {
+  width: 17px;
+  height: 17px;
 }
 
 .remove-btn:hover {
-  color: var(--accent);
+  color: #f2554a;
+  background: rgba(242, 85, 74, 0.12);
 }
-
 /* هدر پروفایل */
 .profile-header {
   display: flex;
