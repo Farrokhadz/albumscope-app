@@ -18,6 +18,10 @@
   --text-muted: #62706a;
 }
 
+body {
+  height: 100vh; /* fallback برای مرورگرهای قدیمی */
+  height: 100dvh; /* مرورگرهای مدرن، حل مشکل نوار آدرس موبایل */
+}
 .auth-body {
   height: 100vh;
   overflow: hidden;
