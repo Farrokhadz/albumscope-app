@@ -171,21 +171,29 @@ body {
   background: var(--bg-card);
   border-top-left-radius: 28px;
   border-top-right-radius: 28px;
-  padding: 14px 26px 32px;
+  padding: 0 26px 32px;
   display: flex;
   flex-direction: column;
 }
 
-.sheet-handle {
+/* ناحیه‌ی لمسی بزرگ‌تر برای دستگیره (سوایپ راحت‌تر روی موبایل) */
+.sheet-handle-zone {
+  width: 100%;
+  padding: 16px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: grab;
+  touch-action: none;
+  margin-bottom: 4px;
+}
+
+.sheet-handle-visual {
   width: 44px;
   height: 4px;
   background: var(--text-muted);
   border-radius: 999px;
-  align-self: center;
-  margin-bottom: 18px;
   opacity: 0.5;
-  cursor: grab;
-  touch-action: none;
 }
 
 .sheet-content {

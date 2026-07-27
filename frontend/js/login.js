@@ -12,6 +12,7 @@ let peek = 44;
 let maxTravel = sheetHeight - peek;
 
 let startY = 0;
+let startTime = 0;
 let isDragging = false;
 let currentTravel = maxTravel;
 
@@ -44,6 +45,7 @@ window.addEventListener("resize", () => {
 
 sheetHandle.addEventListener("pointerdown", (e) => {
   startY = e.clientY;
+  startTime = Date.now();
   isDragging = true;
   authSheet.style.transition = "none";
   heroImg.style.transition = "none";
@@ -59,12 +61,19 @@ document.addEventListener("pointermove", (e) => {
   setProgress(travel);
 });
 
-document.addEventListener("pointerup", () => {
+document.addEventListener("pointerup", (e) => {
   if (!isDragging) return;
   isDragging = false;
 
   const progress = 1 - currentTravel / maxTravel;
-  const target = progress > 0.35 ? 0 : maxTravel;
+  const elapsedTime = Date.now() - startTime;
+  const distanceDragged = startY - e.clientY;
+  const speed = distanceDragged / elapsedTime; // پیکسل بر میلی‌ثانیه
+
+  // اگه سوایپ سریع و رو به بالا بود (حتی اگه فاصله کم باشه)، بازش کن
+  const isQuickSwipeUp = speed > 0.3 && distanceDragged > 20;
+
+  const target = progress > 0.15 || isQuickSwipeUp ? 0 : maxTravel;
 
   const remainingRatio = Math.abs(target - currentTravel) / maxTravel;
   const duration = Math.max(minDuration, baseDuration * remainingRatio);
