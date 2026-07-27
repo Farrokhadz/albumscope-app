@@ -24,6 +24,7 @@ body {
 }
 .auth-body {
   height: 100vh;
+  height: 100dvh;
   overflow: hidden;
   display: flex;
   align-items: center;
@@ -36,6 +37,7 @@ body {
   width: 100%;
   max-width: 420px;
   height: 100vh;
+  height: 100dvh;
   display: flex;
   flex-direction: column;
   background: var(--bg-card);
