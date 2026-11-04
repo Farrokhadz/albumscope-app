@@ -1,82 +1,104 @@
-# AlbumScope
+<div align="center">
 
-A single-page music discovery app where you can search any artist, browse their albums, view track listings, and save your favorites to a personal library — all built with **vanilla JavaScript**, no frameworks.
+# 🎧 AlbumScope
 
-> 🔗 **Live Demo:** _coming soon_
+**Search any artist and explore their albums — a small vanilla JavaScript app built to learn how APIs really work.**
+
+[**🚀 Live Demo**](https://albumscope.vercel.app) · [Report a Bug](../../issues) · [Request a Feature](../../issues)
+
+![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
+![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
+![Vercel](https://img.shields.io/badge/Deployed_on-Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)
+
+<img src="docs/screenshots/demo.gif" alt="AlbumScope demo" width="800" />
+
+</div>
 
 ---
 
+## 📖 About
+
+AlbumScope is a lightweight single-page web app that lets you look up an artist and browse their albums. I built it as a hands-on way to get comfortable with **core JavaScript** and the **logic behind working with REST APIs**: sending requests, handling asynchronous responses, and turning raw JSON into a clean interface.
+
+No frameworks, no build step — just HTML, CSS and vanilla JS.
+
 ## ✨ Features
 
-- **Signup / Login** — dedicated onboarding flow with a draggable bottom-sheet login screen
-- **Artist Search** — live search with debounce and autocomplete suggestions as you type
-- **Album Discovery** — browse an artist's full discography with cover art and release years
-- **Album Details** — dedicated page per album with full track listing, duration, and genre
-- **Personal Library** — save/remove albums, persisted with `localStorage`
-- **Profile Page** — quick stats on saved albums
-- **Custom SPA Router** — client-side routing built from scratch with the History API (no React Router, no frameworks)
-- **Loading / Empty / Error States** — thoughtful UX for every network request
-- **Fully Responsive** — mobile-first design, tested across phone/tablet/desktop viewports
+- 🔍 **Artist search** — type an artist's name and get their albums instantly
+- 🔐 **Login / Sign up flow** — account screens with a dedicated user experience
+- 🎨 **Custom UI** — designed from scratch with a focus on a clean, music-first look
+- 📱 **Responsive layout** — works on desktop and mobile
+
+<!-- ✏️ Add or remove features so this list matches the real app -->
+
+## 🖼️ Screenshots
+
+| Login | Search | Results |
+| :---: | :----: | :-----: |
+| <img src="docs/screenshots/login.png" width="250" /> | <img src="docs/screenshots/search.png" width="250" /> | <img src="docs/screenshots/results.png" width="250" /> |
 
 ## 🛠️ Tech Stack
 
-- **HTML5 / CSS3** — custom design system with CSS variables
-- **Vanilla JavaScript (ES6+)** — no frameworks, no build tools
-- **iTunes Search API** — album and track data
-- **TheAudioDB API** — artist images and profiles
-- **localStorage** — client-side persistence for the library feature
+| Layer | Technology |
+| ----- | ---------- |
+| Markup & Styling | HTML5, CSS3 |
+| Logic | Vanilla JavaScript (ES6+), Fetch API |
+| Data | [iTunes Search API](https://developer.apple.com/library/archive/documentation/AudioVideo/Conceptual/iTuneSearchAPI/index.html) (free, no key required) |
+| Hosting | Vercel |
 
-## 🧠 Why Vanilla JS?
+## 📁 Project Structure
 
-This project was built without a framework on purpose — to properly learn how single-page routing, state management, and DOM manipulation work under the hood before relying on tools like React that abstract them away.
-
-## 📂 Project Structure
-
-```
-AlbumScope/
-├── index.html          # main SPA shell (Search / Library / Profile / Album)
-├── login.html          # login screen (draggable bottom sheet)
-├── signup.html         # signup form
-│
-├── css/
-│   ├── style.css       # main SPA stylesheet
-│   ├── login.css
-│   └── signup.css
-│
-├── js/
-│   ├── router.js        # client-side routing logic
-│   ├── login.js          # login screen interactions
-│   └── pages/
-│       ├── search.js    # search page + live search + autocomplete
-│       ├── album.js     # album detail page
-│       ├── library.js   # saved albums (localStorage)
-│       └── profile.js   # user profile page
-│
-└── image/               # static assets
+```text
+albumscope-app/
+├── ...   <!-- paste the output of `tree` here -->
 ```
 
-## 🚀 Running Locally
+## 🚀 Getting Started
 
-This is a static site with no build step or dependencies.
+The project is plain vanilla JS, so there is nothing to install.
 
-1. Clone the repo
-   ```bash
-   git clone https://github.com/Farrokhadz/AlbumScope.git
-   ```
-2. Open the project folder in VS Code
-3. Install the **Live Server** extension (if you don't have it)
-4. Right-click `login.html` (the entry point) → **Open with Live Server**
+```bash
+# 1. Clone the repository
+git clone https://github.com/Farrokhadz/albumscope-app.git
 
-That's it — no `npm install`, no build tools.
+# 2. Move into the project folder
+cd albumscope-app
 
-> ⚠️ Signup/Login are currently front-end only (no backend yet — see Roadmap below). Submitting the login form takes you straight into the app.
+# 3. Open login.html in your browser
+#    (or use any static server, e.g. the VS Code "Live Server" extension)
+```
+
+## 🧠 What I Learned
+
+- Working with asynchronous JavaScript (`fetch`, `async/await`, promises)
+- Reading API documentation and shaping responses into UI components
+- Handling loading, empty and error states in a real interface
+- Structuring a multi-page vanilla JS project without a framework
+- Deploying a static site on Vercel
+
+<!-- ✏️ Add 1–2 real challenges you hit (e.g. "CORS issue with X", "rendering results fast") -->
 
 ## 🗺️ Roadmap
 
-- [ ] Backend (Node.js + database) for real user accounts
-- [ ] Move saved albums from `localStorage` to a real database
-- [ ] Authentication (signup/login)
+- [ ] Polish and refine the UI
+- [ ] Build a proper backend for authentication and user data
+- [ ] Favorites / saved albums
+- [ ] Album detail page with track list
 
-## 📄 License
+## 🤝 Contributing
 
-This project is open source and available under the [MIT License](LICENSE).
+Suggestions and pull requests are welcome. Open an issue first to discuss what you'd like to change.
+
+## 👤 Author
+
+**Farrokhadz** — Front-end developer
+GitHub: [@Farrokhadz](https://github.com/Farrokhadz)
+
+---
+
+<div align="center">
+
+If you like this project, a ⭐ on the repo means a lot!
+
+</div>
