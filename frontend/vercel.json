@@ -4,5 +4,11 @@
       "source": "/",
       "destination": "/login.html"
     }
+  ],
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
   ]
 }
