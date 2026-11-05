@@ -49,7 +49,7 @@ function renderSearchPage() {
 
     <div class="album-card" style="display: none;">
       <div class="card-profile">
-        <img width="64" height="64" src="image/defultalbum-card.png" alt="artist" />
+        <img width="64" height="64" src="/image/defultalbum-card.png" alt="artist" />
       </div>
       <div class="card-tint"></div>
       <div class="card-overlay"></div>
@@ -111,7 +111,7 @@ function renderSearchPage() {
 
     <div class="album-card" style="display: none;">
       <div class="card-profile">
-        <img width="64" height="64" src="image/defultalbum-card.png" alt="artist" />
+        <img width="64" height="64" src="/image/defultalbum-card.png" alt="artist" />
       </div>
       <div class="card-tint"></div>
       <div class="card-overlay"></div>
