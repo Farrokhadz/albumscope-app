@@ -41,6 +41,8 @@ document.body.addEventListener("click", (e) => {
   renderRoute();
 });
 
+window.addEventListener("popstate", renderRoute);
+
 renderRoute();
 window.addEventListener("scroll", function () {
   const header = document.getElementById("main-header");
