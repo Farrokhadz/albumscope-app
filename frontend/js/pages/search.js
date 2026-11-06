@@ -1,6 +1,7 @@
 let lastSearchResult = null;
 let outsideClickHandler = null;
 let suggestionsController = null;
+let albumsController = null;
 
 const popularArtists = [
   "Drake",
@@ -264,13 +265,17 @@ function showErrorState() {
 }
 
 async function getArtistAlbums(artistName) {
+  if (albumsController) albumsController.abort();
+  albumsController = new AbortController();
+  const signal = albumsController.signal;
+
   try {
     const profile_url = `https://www.theaudiodb.com/api/v1/json/2/search.php?s=${encodeURIComponent(artistName)}`;
-    const profile_response = await fetch(profile_url);
+    const profile_response = await fetch(profile_url, { signal });
     const profile = await profile_response.json();
 
     const searchUrl = `https://itunes.apple.com/search?term=${encodeURIComponent(artistName)}&entity=musicArtist`;
-    const response = await fetch(searchUrl);
+    const response = await fetch(searchUrl, { signal });
     const data = await response.json();
 
     if (data.results.length === 0) {
@@ -281,7 +286,7 @@ async function getArtistAlbums(artistName) {
     const artistId = data.results[0].artistId;
 
     const lookupUrl = `https://itunes.apple.com/lookup?id=${artistId}&entity=album`;
-    const albumsResponse = await fetch(lookupUrl);
+    const albumsResponse = await fetch(lookupUrl, { signal });
     const albumsData = await albumsResponse.json();
 
     const albumsOnly = albumsData.results.filter((item) => {
@@ -305,6 +310,7 @@ async function getArtistAlbums(artistName) {
     lastSearchResult = { cleanAlbums, artistName, profile };
     reRender(cleanAlbums, artistName, profile);
   } catch (error) {
+    if (error.name === "AbortError") return;
     console.log("خطا:", error);
     showErrorState();
   }
