@@ -1,5 +1,6 @@
 let lastSearchResult = null;
 let outsideClickHandler = null;
+let suggestionsController = null;
 
 const popularArtists = [
   "Drake",
@@ -187,13 +188,17 @@ function selectPopularArtist(artistName) {
 }
 
 async function fetchSuggestions(query) {
+  if (suggestionsController) suggestionsController.abort();
+  suggestionsController = new AbortController();
+
   try {
     const url = `https://itunes.apple.com/search?term=${encodeURIComponent(query)}&entity=musicArtist&limit=5`;
-    const response = await fetch(url);
+    const response = await fetch(url, { signal: suggestionsController.signal });
     const data = await response.json();
 
     renderSuggestions(data.results);
   } catch (error) {
+    if (error.name === "AbortError") return;
     console.log("خطا تو گرفتن پیشنهادها:", error);
   }
 }
