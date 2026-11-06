@@ -100,8 +100,8 @@ function fillTrackList(tracks) {
     const duration = formatDuration(track.trackTimeMillis);
 
     li.innerHTML = `
-      <span class="track-number">${track.trackNumber}</span>
-      <span class="track-name">${track.trackName}</span>
+      <span class="track-number">${escapeHTML(track.trackNumber)}</span>
+      <span class="track-name">${escapeHTML(track.trackName)}</span>
       <span class="track-duration">${duration}</span>
     `;
     trackList.append(li);

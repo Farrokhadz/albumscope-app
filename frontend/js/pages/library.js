@@ -33,12 +33,12 @@ function initLibraryPage() {
   savedAlbums.forEach((album) => {
     const li = document.createElement("li");
     li.innerHTML = `
-      <a href="/album/${album.id}" data-link>
-        <img src="${album.image}" />
-        <p>${album.year}</p>
-        <h2>${album.name}</h2>
+      <a href="/album/${escapeHTML(album.id)}" data-link>
+        <img src="${escapeHTML(album.image)}" />
+        <p>${escapeHTML(album.year)}</p>
+        <h2>${escapeHTML(album.name)}</h2>
       </a>
-      <button class="remove-btn" data-remove-id="${album.id}" aria-label="Remove from library">
+      <button class="remove-btn" data-remove-id="${escapeHTML(album.id)}" aria-label="Remove from library">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
           <path d="M3 6h18"></path>
           <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>

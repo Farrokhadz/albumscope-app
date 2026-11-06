@@ -169,12 +169,12 @@ async function fetchPopularArtistImage(artistName, card) {
         : "";
 
     card.innerHTML = `
-      <img src="${image || ""}" alt="${artistName}" />
+      <img src="${escapeHTML(image || "")}" alt="${escapeHTML(artistName)}" />
       <div class="popular-card-overlay"></div>
-      <span class="popular-card-name">${artistName}</span>
+      <span class="popular-card-name">${escapeHTML(artistName)}</span>
     `;
   } catch (error) {
-    card.innerHTML = `<span class="popular-card-name">${artistName}</span>`;
+    card.innerHTML = `<span class="popular-card-name">${escapeHTML(artistName)}</span>`;
   }
 }
 
@@ -242,13 +242,13 @@ function showLoadingState() {
 
 function showNotFoundState(artistName) {
   document.querySelector(".search-status").innerHTML = `
-    <p class="status-message">هیچ خواننده‌ای با اسم "${artistName}" پیدا نشد.</p>
+    <p class="status-message">هیچ خواننده‌ای با اسم "${escapeHTML(artistName)}" پیدا نشد.</p>
   `;
 }
 
 function showNoAlbumsState(artistName) {
   document.querySelector(".search-status").innerHTML = `
-    <p class="status-message">"${artistName}" پیدا شد، ولی آلبومی براش موجود نیست.</p>
+    <p class="status-message">"${escapeHTML(artistName)}" پیدا شد، ولی آلبومی براش موجود نیست.</p>
   `;
 }
 
@@ -318,17 +318,17 @@ function reRender(cleanAlbums, artistName, profile) {
     const li = document.createElement("li");
     albumList.append(li);
     li.innerHTML = `
-          <a href="/album/${card.id}" data-link>
+          <a href="/album/${escapeHTML(card.id)}" data-link>
           <div class="album-thumb">
-            <img src="${card.image}"/>
+            <img src="${escapeHTML(card.image)}"/>
             <div class="play-overlay">
               <svg viewBox="0 0 24 24" fill="currentColor">
                 <path d="M8 5v14l11-7z"></path>
               </svg>
             </div>
           </div>
-          <p>${card.year}</p>
-          <h2>${card.name}</h2>
+          <p>${escapeHTML(card.year)}</p>
+          <h2>${escapeHTML(card.name)}</h2>
           </a>`;
   }
 
@@ -338,7 +338,7 @@ function reRender(cleanAlbums, artistName, profile) {
 
   if (profile.artists && profile.artists.length > 0) {
     document.querySelector(".card-profile").innerHTML =
-      `<img src="${profile.artists[0].strArtistFanart}"/>`;
+      `<img src="${escapeHTML(profile.artists[0].strArtistFanart)}"/>`;
   } else {
     document.querySelector(".card-profile").innerHTML = `<img src=""/>`;
   }
