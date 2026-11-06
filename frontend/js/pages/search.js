@@ -1,4 +1,5 @@
 let lastSearchResult = null;
+let outsideClickHandler = null;
 
 const popularArtists = [
   "Drake",
@@ -97,11 +98,17 @@ function initSearchPage() {
     }, 500);
   });
 
-  document.addEventListener("click", function (e) {
+  if (outsideClickHandler) {
+    document.removeEventListener("click", outsideClickHandler);
+  }
+
+  outsideClickHandler = function (e) {
     if (!e.target.closest(".search-input-wrapper")) {
       suggestionsList.innerHTML = "";
     }
-  });
+  };
+
+  document.addEventListener("click", outsideClickHandler);
 
   form.addEventListener("submit", function (e) {
     e.preventDefault();
